@@ -1,5 +1,6 @@
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Module } from '@nestjs/common';
+import { User } from './users/user.model';
 @Module({
   imports: [
     SequelizeModule.forRoot({
@@ -7,11 +8,10 @@ import { Module } from '@nestjs/common';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: 'pizza_password',
-      database: 'pizza_db',
-      models: [],
-      // autoLoadModels: false,
-      // models: [User],
+      password: 'expense_password',
+      database: 'expense_db',
+      models: [User],
+      // autoLoadModels: true,
       // synchronize: true,
     }),
   ],
