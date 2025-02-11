@@ -78,10 +78,14 @@ export class ExpenseUsersService {
   }
 
   //TO add Expenses in the table for the user
-  async addExpense(addExpenseDto: AddExpenseDto) {
-    const { userId, typesOfExpense, amount, description } = addExpenseDto;
+  async addExpense(addExpenseDto: AddExpenseDto, userId: any) {
+    const { typesOfExpense, amount, description } = addExpenseDto;
 
-    if (!userId || !typesOfExpense || !amount || !description) {
+    if (!userId) {
+      throw new BadGatewayException('userId not available');
+    }
+
+    if (!typesOfExpense || !amount || !description) {
       throw new BadGatewayException('all feild required');
     }
 

@@ -5,9 +5,9 @@ export class AddExpenseDto {
   @IsNotEmpty()
   typesOfExpense: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  userId: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // userId: number;
 
   @IsNumber()
   @IsNotEmpty()
