@@ -1,7 +1,7 @@
 'use strict';
 
 export async function up(queryInterface, Sequelize) {
-  await queryInterface.createTable('Users-Expense', {
+  await queryInterface.createTable('Expense', {
     id: {
       type: Sequelize.INTEGER,
       autoIncrement: true,
@@ -37,5 +37,5 @@ export async function up(queryInterface, Sequelize) {
   });
 }
 export async function down(queryInterface, Sequelize) {
-  await queryInterface.dropTable('Users-Expense');
+  await queryInterface.dropTable('Expense');
 }

@@ -35,11 +35,6 @@ export class UsersService {
 
     //save the user in the DataBase
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = {
-      name: name,
-      email: email,
-      password: hashedPassword,
-    };
     const userOnce = await this.UserModel.create({
       name: name,
       email: email,
@@ -62,7 +57,7 @@ export class UsersService {
       throw new BadRequestException('email is invalid');
     }
 
-    const passwordMatch = bcrypt.compare(password, user.password);
+    const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
       throw new BadRequestException('password is not match');
     }
