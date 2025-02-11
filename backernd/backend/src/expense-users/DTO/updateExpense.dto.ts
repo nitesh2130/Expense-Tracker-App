@@ -11,10 +11,6 @@ export class UpdateExpenseDto {
 
   @IsNumber()
   @IsEmpty()
-  userId: number;
-
-  @IsNumber()
-  @IsEmpty()
   amount: number;
 
   @IsString()

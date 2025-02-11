@@ -15,16 +15,17 @@ import { User } from 'src/users/user.model';
 export class ExpenseUsersController {
   constructor(private readonly ExpenseUsersService: ExpenseUsersService) {} // correct inject User Service
 
+  //
   @Get('all_expense')
-  getAllExpense(@Body() getExpenseDto: GetExpenseDto) {
-    return this.ExpenseUsersService.getAllExpense(getExpenseDto);
+  getAllExpense(@Body() getExpenseDto: GetExpenseDto, @Req() req: any) {
+    const userId = req?.user?.userId;
+    return this.ExpenseUsersService.getAllExpense(getExpenseDto, userId);
   }
-
+  //
   @Post('addExpense')
   addExpense(@Body() addExpenseDto: AddExpenseDto, @Req() req: any) {
     const userId = req?.user?.userId;
     console.log(userId, 'this is also user');
-
     return this.ExpenseUsersService.addExpense(addExpenseDto, userId);
   }
 
@@ -34,12 +35,8 @@ export class ExpenseUsersController {
   }
 
   @Put('updateExpense')
-  updateExpense(@Body() updateExpenseDto: UpdateExpenseDto) {
+  updateExpense(@Body() updateExpenseDto: UpdateExpenseDto, @Req() req: any) {
+    const userId = req?.user?.userId;
     return this.ExpenseUsersService.updateExpense(updateExpenseDto);
   }
 }
-
-// {
-//    "email": "nit1@gmail.com",
-//    "password": "123456"
-// }

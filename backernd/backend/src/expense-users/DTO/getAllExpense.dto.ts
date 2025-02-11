@@ -8,9 +8,9 @@ import {
 } from 'class-validator';
 
 export class GetExpenseDto {
-  @IsNumber()
-  @IsNotEmpty()
-  userId: number;
+  // @IsNumber()
+  // @IsNotEmpty()
+  // userId: number;
 
   @IsString()
   @IsEmpty()

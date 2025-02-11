@@ -20,8 +20,8 @@ export class ExpenseUsersService {
   constructor(@InjectModel(Expense) private ExpenseModel: typeof Expense) {}
 
   //This is all Expense for current User
-  async getAllExpense(getExpenseDto: GetExpenseDto) {
-    const { userId, typesOfExpense, startTime, endTime } = getExpenseDto;
+  async getAllExpense(getExpenseDto: GetExpenseDto, userId: any) {
+    const { typesOfExpense, startTime, endTime } = getExpenseDto;
 
     if (!userId) {
       throw new BadGatewayException('userId is required');
