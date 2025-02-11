@@ -17,25 +17,25 @@ export class Expense extends Model {
     type: DataType.INTEGER,
     allowNull: false,
   })
-  UserId: number;
+  userId: number;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  Types_of_Expense: string;
+  typesOfExpense: string;
 
   @Column({
     type: DataType.INTEGER,
     allowNull: false,
   })
-  Amount: number;
+  amount: number;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
   })
-  Description: string;
+  description: string;
 
   @Column({
     allowNull: false,

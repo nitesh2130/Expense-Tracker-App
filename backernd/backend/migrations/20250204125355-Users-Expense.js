@@ -8,19 +8,19 @@ export async function up(queryInterface, Sequelize) {
       primaryKey: true,
       allowNull: false,
     },
-    Types_of_Expense: {
+    typesOfExpense: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    Amount: {
+    amount: {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
-    UserId: {
+    userId: {
       type: Sequelize.INTEGER,
       allowNull: false,
     },
-    Description: {
+    description: {
       type: Sequelize.STRING,
       allowNull: false,
     },

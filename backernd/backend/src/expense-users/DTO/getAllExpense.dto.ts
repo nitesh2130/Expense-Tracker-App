@@ -10,11 +10,11 @@ import {
 export class GetExpenseDto {
   @IsNumber()
   @IsNotEmpty()
-  UserId: number;
+  userId: number;
 
   @IsString()
   @IsEmpty()
-  Types_of_Expense: string;
+  typesOfExpense: string;
 
   @IsDate()
   @IsEmpty()

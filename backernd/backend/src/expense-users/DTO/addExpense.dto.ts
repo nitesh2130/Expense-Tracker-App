@@ -3,17 +3,17 @@ import { IsNotEmpty, IsNumber, isString, IsString } from 'class-validator';
 export class AddExpenseDto {
   @IsString()
   @IsNotEmpty()
-  Types_of_Expense: string;
+  typesOfExpense: string;
 
   @IsNumber()
   @IsNotEmpty()
-  UserId: number;
+  userId: number;
 
   @IsNumber()
   @IsNotEmpty()
-  Amount: number;
+  amount: number;
 
   @IsString()
   @IsNotEmpty()
-  Description: string;
+  description: string;
 }

@@ -1,4 +1,4 @@
-import { CreatedAt } from 'sequelize-typescript';
+// import { CreatedAt } from 'sequelize-typescript';
 import { User } from './../users/user.model';
 import { Expense } from './expense.model';
 import {
@@ -7,12 +7,13 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { find } from 'rxjs';
+import { find, throwError } from 'rxjs';
 import { Op } from 'sequelize';
 import { AddExpenseDto } from './DTO/addExpense.dto';
 import { types } from 'node:util';
 import { GetExpenseDto } from './DTO/getAllExpense.dto';
 import { DeleteExpenseDto } from './DTO/deleteExpense.dto';
+import { UpdateExpenseDto } from './DTO/updateExpense.dto';
 
 @Injectable()
 export class ExpenseUsersService {
@@ -20,18 +21,18 @@ export class ExpenseUsersService {
 
   //This is all Expense for current User
   async getAllExpense(getExpenseDto: GetExpenseDto) {
-    const { UserId, Types_of_Expense, startTime, endTime } = getExpenseDto;
+    const { userId, typesOfExpense, startTime, endTime } = getExpenseDto;
 
-    if (!UserId) {
+    if (!userId) {
       throw new BadGatewayException('userId is required');
     }
 
     //get data to the respect of userId , Types of Expense and time fream
-    if (UserId && Types_of_Expense && startTime && endTime) {
+    if (userId && typesOfExpense && startTime && endTime) {
       const allExpense = await this.ExpenseModel.findAll({
         where: {
-          UserId: UserId,
-          Types_of_Expense: Types_of_Expense,
+          UserId: userId,
+          typesOfExpense: typesOfExpense,
           createdAt: {
             [Op.gte]: new Date(startTime),
             [Op.lte]: new Date(endTime),
@@ -42,21 +43,21 @@ export class ExpenseUsersService {
       return allExpense;
     } else {
       // get data to the respect of userId and types of Expense
-      if (UserId && Types_of_Expense) {
+      if (userId && typesOfExpense) {
         const allExpense = await this.ExpenseModel.findAll({
           where: {
-            UserId: UserId,
-            Types_of_Expense: Types_of_Expense,
+            userId: userId,
+            typesOfExpense: typesOfExpense,
           },
         });
 
         return allExpense;
       }
       // get data to the respect of userId and time fream
-      if (UserId && startTime && endTime) {
+      if (userId && startTime && endTime) {
         const allExpense = await this.ExpenseModel.findAll({
           where: {
-            UserId: UserId,
+            userId: userId,
             createdAt: {
               [Op.gte]: new Date(startTime),
               [Op.lte]: new Date(endTime),
@@ -68,9 +69,9 @@ export class ExpenseUsersService {
     }
 
     // get datato the respect of userId only
-    if (UserId && !Types_of_Expense && !startTime && !endTime) {
+    if (userId && !typesOfExpense && !startTime && !endTime) {
       const allExpense = await this.ExpenseModel.findAll({
-        where: { UserId: UserId },
+        where: { userId: userId },
       });
       return allExpense;
     }
@@ -78,22 +79,22 @@ export class ExpenseUsersService {
 
   //TO add Expenses in the table for the user
   async addExpense(addExpenseDto: AddExpenseDto) {
-    const { UserId, Types_of_Expense, Amount, Description } = addExpenseDto;
+    const { userId, typesOfExpense, amount, description } = addExpenseDto;
 
-    if (!UserId || !Types_of_Expense || !Amount || !Description) {
+    if (!userId || !typesOfExpense || !amount || !description) {
       throw new BadGatewayException('all feild required');
     }
 
-    const CreatedAt = new Date();
-    console.log(CreatedAt, 'this is the data');
-    console.log(Amount, 'this is UserId');
+    const createdAt = new Date();
+    console.log(createdAt, 'this is the data');
+    console.log(amount, 'this is UserId');
 
     const expense = await this.ExpenseModel.create({
-      UserId: UserId,
-      Types_of_Expense: Types_of_Expense,
-      Amount: Amount,
-      Description: Description,
-      createdAt: CreatedAt,
+      userId: userId,
+      typesOfExpense: typesOfExpense,
+      amount: amount,
+      description: description,
+      createdAt: createdAt,
     });
     console.log(expense, ' this is the expense ');
 
@@ -115,4 +116,26 @@ export class ExpenseUsersService {
   }
 
   // update the user expense
+  async updateExpense(updateExpenseDto: UpdateExpenseDto) {
+    const { typesOfExpense, amount, description, id } = updateExpenseDto;
+    if (!id) {
+      throw new NotFoundException('not found id of the Expense');
+    }
+
+    if (!typesOfExpense || !amount || !description) {
+      throw new NotFoundException(
+        'Not have any data for the update in the expense',
+      );
+    }
+
+    const expense = await this.ExpenseModel.findByPk(id);
+
+    if (!expense) {
+      throw new NotFoundException('not found id of the Expense');
+    }
+
+    await expense.update(updateExpenseDto);
+
+    return { message: 'User Expense is updated' };
+  }
 }

@@ -1,4 +1,4 @@
-import { Delete, Get, Injectable } from '@nestjs/common';
+import { Delete, Get, Injectable, Put } from '@nestjs/common';
 // import { User } from './../users/user.model';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ExpenseUsersService } from './expense-users.service';
@@ -6,6 +6,7 @@ import { Expense } from './expense.model';
 import { GetExpenseDto } from './DTO/getAllExpense.dto';
 import { AddExpenseDto } from './DTO/addExpense.dto';
 import { DeleteExpenseDto } from './DTO/deleteExpense.dto';
+import { UpdateExpenseDto } from './DTO/updateExpense.dto';
 
 @Controller('expense-users')
 export class ExpenseUsersController {
@@ -24,6 +25,11 @@ export class ExpenseUsersController {
   @Delete('deleteExpense')
   deleteExpense(@Body() deleteExpenseDto: DeleteExpenseDto) {
     return this.ExpenseUsersService.deleteExpense(deleteExpenseDto);
+  }
+
+  @Put('updateExpense')
+  updateExpense(@Body() updateExpenseDto: UpdateExpenseDto) {
+    return this.ExpenseUsersService.updateExpense(updateExpenseDto);
   }
 }
 
