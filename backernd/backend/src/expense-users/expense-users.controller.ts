@@ -1,4 +1,13 @@
-import { Delete, Get, Injectable, Put, Req, UseGuards } from '@nestjs/common';
+import {
+  Delete,
+  Get,
+  Injectable,
+  Param,
+  Put,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 // import { User } from './../users/user.model';
 import { Body, Controller, Post } from '@nestjs/common';
 import { ExpenseUsersService } from './expense-users.service';
@@ -17,7 +26,7 @@ export class ExpenseUsersController {
 
   //
   @Get('all_expense')
-  getAllExpense(@Body() getExpenseDto: GetExpenseDto, @Req() req: any) {
+  getAllExpense(@Query() getExpenseDto: GetExpenseDto, @Req() req: any) {
     const userId = req?.user?.userId;
     return this.ExpenseUsersService.getAllExpense(getExpenseDto, userId);
   }
@@ -30,13 +39,13 @@ export class ExpenseUsersController {
   }
 
   @Delete('deleteExpense')
-  deleteExpense(@Body() deleteExpenseDto: DeleteExpenseDto) {
+  deleteExpense(@Query() deleteExpenseDto: DeleteExpenseDto) {
     return this.ExpenseUsersService.deleteExpense(deleteExpenseDto);
   }
 
   @Put('updateExpense')
-  updateExpense(@Body() updateExpenseDto: UpdateExpenseDto, @Req() req: any) {
-    const userId = req?.user?.userId;
+  updateExpense(@Body() updateExpenseDto: UpdateExpenseDto) {
+    // const userId = req?.user?.userId;
     return this.ExpenseUsersService.updateExpense(updateExpenseDto);
   }
 }

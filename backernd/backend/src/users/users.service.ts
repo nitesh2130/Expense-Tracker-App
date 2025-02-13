@@ -50,6 +50,8 @@ export class UsersService {
 
   async loginUser(loginDto: LoginDto) {
     const { email, password } = loginDto;
+    console.log(email, 'this is................. email');
+    console.log(password, 'this is.............. password');
 
     //Check the user is Exist or not
     const user = await this.UserModel.findOne({ where: { email: email } });
@@ -79,4 +81,6 @@ export class UsersService {
     // const { password, ...userDetails } = user;
     return { access_token, user, message: 'user is login successfully' };
   }
+
+  //For the user LogOut
 }

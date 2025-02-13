@@ -42,6 +42,7 @@ export class Expense extends Model {
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   createdAt: Date;
+  // data: any;
 
   // @Column({ type: DataType.DATE })
   // createdAt: Date;

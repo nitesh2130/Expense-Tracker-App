@@ -14,6 +14,7 @@ import { types } from 'node:util';
 import { GetExpenseDto } from './DTO/getAllExpense.dto';
 import { DeleteExpenseDto } from './DTO/deleteExpense.dto';
 import { UpdateExpenseDto } from './DTO/updateExpense.dto';
+import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class ExpenseUsersService {
@@ -27,16 +28,36 @@ export class ExpenseUsersService {
       throw new BadGatewayException('userId is required');
     }
 
+    console.log(startTime, ' this is startTime');
     //get data to the respect of userId , Types of Expense and time fream
     if (userId && typesOfExpense && startTime && endTime) {
+      console.log('..................this is running .................');
+      console.log(startTime, ' this is startTime');
       const allExpense = await this.ExpenseModel.findAll({
         where: {
-          UserId: userId,
+          userId: userId,
           typesOfExpense: typesOfExpense,
+          //  "ILIKE", typesOfExpense,
+          //  Sequelize.where(Sequelize.col("typesOfExpense"), "ILIKE", typesOfExpense),
           createdAt: {
             [Op.gte]: new Date(startTime),
             [Op.lte]: new Date(endTime),
           },
+
+          // [Op.and]: [
+          //   Sequelize.where(Sequelize.col('userId'), userId),
+          //   Sequelize.where(
+          //     Sequelize.col('typesOfExpense'),
+          //     'ILIKE',
+          //     typesOfExpense,
+          //   ),
+          //   {
+          //     createdAt: {
+          //       [Op.gte]: new Date(startTime),
+          //       [Op.lte]: new Date(endTime),
+          //     },
+          //   },
+          // ],
         },
       });
 
@@ -44,6 +65,7 @@ export class ExpenseUsersService {
     } else {
       // get data to the respect of userId and types of Expense
       if (userId && typesOfExpense) {
+        // console.log('..................this is running .................');
         const allExpense = await this.ExpenseModel.findAll({
           where: {
             userId: userId,
@@ -84,6 +106,10 @@ export class ExpenseUsersService {
     if (!userId) {
       throw new BadGatewayException('userId not available');
     }
+    console.log(userId, '...this is userId');
+    console.log(amount, '...this is amount');
+    console.log(typesOfExpense, '...this is typesOfExpense');
+    console.log(description, '...this is description');
 
     if (!typesOfExpense || !amount || !description) {
       throw new BadGatewayException('all feild required');
@@ -108,6 +134,7 @@ export class ExpenseUsersService {
   //delete the user Expense
   async deleteExpense(deleteExpenseDto: DeleteExpenseDto) {
     const { id } = deleteExpenseDto;
+    console.log(id, '....................id');
 
     const expense = await this.ExpenseModel.findByPk(id);
     console.log(expense, 'this is Expense those i want to delete ');
@@ -132,14 +159,15 @@ export class ExpenseUsersService {
       );
     }
 
+    console.log(typesOfExpense, 'this is typesOfExpense');
     const expense = await this.ExpenseModel.findByPk(id);
 
     if (!expense) {
       throw new NotFoundException('not found id of the Expense');
     }
 
-    await expense.update(updateExpenseDto);
+    const newExpense = await expense.update(updateExpenseDto);
 
-    return { message: 'User Expense is updated' };
+    return { newExpense, message: 'User Expense is updated' };
   }
 }

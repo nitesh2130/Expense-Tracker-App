@@ -1,4 +1,7 @@
-import { useState } from "react";
+import { MouseEventHandler, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+// import useNavigate from 'Na'
 import {
   Flex,
   Heading,
@@ -9,10 +12,8 @@ import {
   InputLeftElement,
   chakra,
   Box,
-  Link,
   Avatar,
   FormControl,
-  FormHelperText,
   InputRightElement,
 } from "@chakra-ui/react";
 import { FaUserAlt, FaLock } from "react-icons/fa";
@@ -20,14 +21,44 @@ import { FaUserAlt, FaLock } from "react-icons/fa";
 const CFaUserAlt = chakra(FaUserAlt);
 const CFaLock = chakra(FaLock);
 
-const App = () => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const apiUrlLogin = "http://localhost:3000/users/login";
 
   const handleShowClick = () => setShowPassword(!showPassword);
+  const navigate = useNavigate();
 
-  //   const toRegister: any () {
+  const toRegister: MouseEventHandler<HTMLButtonElement> | undefined = () => {
+    navigate("/register");
+  };
 
-  //   }
+  const handleChange = (e: any) => {
+    const { name, value } = e.target;
+    // console.log(formData, "this is form data///////////////");
+    setFormData({ ...formData, [name]: value });
+    // console.log(formData, "this is form data...........");
+  };
+
+  const submitFormData = async (e: any) => {
+    console.log("this is API  data ......../////,,", formData);
+    e.preventDefault();
+    const response = await axios.post(apiUrlLogin, formData);
+    const data = response.data;
+    console.log(data, "this is Api respose Data");
+
+    if (data) {
+      alert("You are Login successful !");
+
+      // console.log(data.access_token, "..........this is AccessToken");
+      localStorage.setItem("accessToken", data.access_token);
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <Flex
@@ -44,13 +75,17 @@ const App = () => {
         justifyContent="center"
         alignItems="center"
       >
-        <Avatar bg="teal.500" />
-        <Heading color="teal.400">Welcome</Heading>
+        <Avatar bg="green.500" />
+        <Heading color="green.500">Welcome</Heading>
         <Box minW={{ base: "90%", md: "68px" }}>
-          <form className="h-100vh">
+          <form
+            className="h-100vh"
+            onChange={handleChange}
+            onSubmit={submitFormData}
+          >
             <Stack
-              spacing={4}
-              p="1rem"
+              spacing={8}
+              p="8rem"
               backgroundColor="whiteAlpha.900"
               boxShadow="md"
             >
@@ -60,7 +95,13 @@ const App = () => {
                     pointerEvents="none"
                     children={<CFaUserAlt color="gray.300" />}
                   />
-                  <Input type="email" placeholder="email address" />
+                  <Input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    // onChange={handleChange}
+                    placeholder="email address"
+                  />
                 </InputGroup>
               </FormControl>
               <FormControl>
@@ -72,9 +113,12 @@ const App = () => {
                   />
                   <Input
                     type={showPassword ? "text" : "password"}
+                    name="password"
+                    value={formData.password}
+                    // onChange={handleChange}
                     placeholder="Password"
                   />
-                  <InputRightElement width="4.5rem">
+                  <InputRightElement width="4rem">
                     <Button h="1.75rem" size="sm" onClick={handleShowClick}>
                       {showPassword ? "Hide" : "Show"}
                     </Button>
@@ -82,10 +126,10 @@ const App = () => {
                 </InputGroup>
               </FormControl>
               <Button
-                borderRadius={0}
+                borderRadius={10}
                 type="submit"
                 variant="solid"
-                colorScheme="teal"
+                colorScheme="green"
                 width="full"
               >
                 Login
@@ -95,16 +139,13 @@ const App = () => {
         </Box>
       </Stack>
       <Box>
-        New to us?{" "}
-        <Link
-          color="teal.500"
-          //  onClick={toRegister}
-        >
+        Not have an acconut?{" "}
+        <Button color="green.500" onClick={toRegister}>
           Sign Up
-        </Link>
+        </Button>
       </Box>
     </Flex>
   );
 };
 
-export default App;
+export default Login;
