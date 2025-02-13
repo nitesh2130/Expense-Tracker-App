@@ -25,7 +25,6 @@ export const AddExpense = ({ setUpdatePage, updatePage }: any) => {
     typesOfExpense: "",
     amount: "",
     description: "",
-    // id:"",
   });
   const apiUrlAddExpense = "http://localhost:3000/expense-users/addExpense";
   const accessToken = localStorage.getItem("accessToken");
@@ -45,6 +44,11 @@ export const AddExpense = ({ setUpdatePage, updatePage }: any) => {
     const data = response.data;
     if (data) {
       setUpdatePage(!updatePage);
+      setExpense({
+        typesOfExpense: "",
+        amount: "",
+        description: "",
+      });
     }
     onClose();
   };

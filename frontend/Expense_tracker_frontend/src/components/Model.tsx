@@ -38,11 +38,11 @@ export const UpdateExpense = ({
     id: id,
   });
 
-  useEffect(() => {
-    typesOfExpense;
-    amount;
-    description;
-  }, []);
+  // useEffect(() => {
+  //   typesOfExpense;
+  //   amount;
+  //   description;
+  // }, []);
 
   const apiUrlUapdate = "http://localhost:3000/expense-users/updateExpense";
 

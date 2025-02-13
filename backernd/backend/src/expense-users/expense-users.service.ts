@@ -1,5 +1,4 @@
 // import { CreatedAt } from 'sequelize-typescript';
-import { User } from './../users/user.model';
 import { Expense } from './expense.model';
 import {
   BadGatewayException,
@@ -36,28 +35,18 @@ export class ExpenseUsersService {
       const allExpense = await this.ExpenseModel.findAll({
         where: {
           userId: userId,
-          typesOfExpense: typesOfExpense,
-          //  "ILIKE", typesOfExpense,
-          //  Sequelize.where(Sequelize.col("typesOfExpense"), "ILIKE", typesOfExpense),
+          // typesOfExpense: typesOfExpense,
+
+          [Op.and]: [
+            Sequelize.where(
+              Sequelize.fn('LOWER', Sequelize.col('typesOfExpense')),
+              typesOfExpense.toLowerCase(), // Convert input value to lowercase
+            ),
+          ],
           createdAt: {
             [Op.gte]: new Date(startTime),
             [Op.lte]: new Date(endTime),
           },
-
-          // [Op.and]: [
-          //   Sequelize.where(Sequelize.col('userId'), userId),
-          //   Sequelize.where(
-          //     Sequelize.col('typesOfExpense'),
-          //     'ILIKE',
-          //     typesOfExpense,
-          //   ),
-          //   {
-          //     createdAt: {
-          //       [Op.gte]: new Date(startTime),
-          //       [Op.lte]: new Date(endTime),
-          //     },
-          //   },
-          // ],
         },
       });
 
@@ -69,7 +58,13 @@ export class ExpenseUsersService {
         const allExpense = await this.ExpenseModel.findAll({
           where: {
             userId: userId,
-            typesOfExpense: typesOfExpense,
+            // typesOfExpense: typesOfExpense,
+            [Op.and]: [
+              Sequelize.where(
+                Sequelize.fn('LOWER', Sequelize.col('typesOfExpense')),
+                typesOfExpense.toLowerCase(), // Convert input value to lowercase
+              ),
+            ],
           },
         });
 

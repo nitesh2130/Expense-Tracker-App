@@ -68,7 +68,15 @@ export const ExpenseCard = ({
         <Text textAlign="center">{description}</Text>
       </CardBody>
 
-      <Box bg="orange.300" display="flex" justifyContent="center" py={4}>
+      <Box
+        bg="orange.400"
+        color="white"
+        fontSize="xl"
+        fontWeight="bold"
+        display="flex"
+        justifyContent="center"
+        py={4}
+      >
         Rs. = {amount}
       </Box>
 
